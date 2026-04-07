@@ -8,12 +8,24 @@ export const getDateMinus = (dateStr, days) => {
   return d.toISOString().split('T')[0];
 };
 
+export const formatDateFr = (dateStr) => {
+  const d = new Date(dateStr + 'T12:00:00');
+  const days = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+  const months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+  return `${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]}`;
+};
+
 const STORAGE_KEYS = {
-  STATE: 'niyyah_state_v3',
-  HISTORY: 'niyyah_history_v3',
+  STATE: 'spiritual_v2',
+  HISTORY: 'spiritual_history',
+  LEVEL: 'spiritual_level',
   WIRD: 'niyyah_wird_',
   CITY: 'niyyah_city',
-  INTENTION: 'niyyah_intention',
+  INTENTION_TYPE: 'niyyah_intention_type',
+  INTENTION_LABEL: 'niyyah_intention_label',
+  INTENTION_DATE: 'niyyah_intention_date',
+  ONBOARD: 'niyyah_onboard',
+  COUNTERS: 'niyyah_counters_',
 };
 
 export const loadState = () => {
@@ -28,10 +40,7 @@ export const loadState = () => {
       return {
         _date: today,
         _unlocked: prevState._unlocked || [1],
-        prayers: {},
-        dhikr: {},
-        counters: { istighfar: 0, tasbih: 0 },
-        wird: { matin: {}, soir: {} },
+        _prevDate: prevState._date,
       };
     }
     return state;
@@ -40,10 +49,6 @@ export const loadState = () => {
     return {
       _date: getToday(),
       _unlocked: [1],
-      prayers: {},
-      dhikr: {},
-      counters: { istighfar: 0, tasbih: 0 },
-      wird: { matin: {}, soir: {} },
     };
   }
 };
@@ -79,25 +84,61 @@ export const saveHistory = (history) => {
   }
 };
 
+export const loadCurrentLevel = () => {
+  return parseInt(localStorage.getItem(STORAGE_KEYS.LEVEL) || '1', 10);
+};
+
+export const saveCurrentLevel = (level) => {
+  localStorage.setItem(STORAGE_KEYS.LEVEL, String(level));
+};
+
+export const loadWirdState = (session) => {
+  try {
+    const key = STORAGE_KEYS.WIRD + session + '_' + getToday();
+    const saved = localStorage.getItem(key);
+    return saved ? JSON.parse(saved) : {};
+  } catch (e) {
+    return {};
+  }
+};
+
+export const saveWirdState = (session, wirdState) => {
+  const key = STORAGE_KEYS.WIRD + session + '_' + getToday();
+  localStorage.setItem(key, JSON.stringify(wirdState));
+};
+
+export const loadCounters = () => {
+  try {
+    const key = STORAGE_KEYS.COUNTERS + getToday();
+    const saved = localStorage.getItem(key);
+    return saved ? JSON.parse(saved) : { istighfar: 0, tasbih: 0 };
+  } catch (e) {
+    return { istighfar: 0, tasbih: 0 };
+  }
+};
+
+export const saveCounters = (counters) => {
+  const key = STORAGE_KEYS.COUNTERS + getToday();
+  localStorage.setItem(key, JSON.stringify(counters));
+};
+
 export const loadCity = () => localStorage.getItem(STORAGE_KEYS.CITY) || '';
 export const saveCity = (city) => localStorage.setItem(STORAGE_KEYS.CITY, city);
 
 export const loadIntention = () => {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEYS.INTENTION);
-    if (!saved) return null;
-    const data = JSON.parse(saved);
-    if (data.date !== getToday()) return null;
-    return data;
-  } catch (e) {
-    return null;
-  }
+  const date = localStorage.getItem(STORAGE_KEYS.INTENTION_DATE);
+  if (date !== getToday()) return null;
+  return {
+    type: localStorage.getItem(STORAGE_KEYS.INTENTION_TYPE),
+    label: localStorage.getItem(STORAGE_KEYS.INTENTION_LABEL),
+  };
 };
 
 export const saveIntention = (type, label) => {
-  localStorage.setItem(STORAGE_KEYS.INTENTION, JSON.stringify({
-    date: getToday(),
-    type,
-    label,
-  }));
+  localStorage.setItem(STORAGE_KEYS.INTENTION_TYPE, type);
+  localStorage.setItem(STORAGE_KEYS.INTENTION_LABEL, label);
+  localStorage.setItem(STORAGE_KEYS.INTENTION_DATE, getToday());
 };
+
+export const isOnboardDone = () => localStorage.getItem(STORAGE_KEYS.ONBOARD) === '1';
+export const setOnboardDone = () => localStorage.setItem(STORAGE_KEYS.ONBOARD, '1');
