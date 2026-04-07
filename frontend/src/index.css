@@ -20,12 +20,6 @@
   --text-secondary: #cbd5e1;
   --text-muted: #64748b;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
-  --bg-texture: url('https://customer-assets.emergentagent.com/job_web-app-enhance-1/artifacts/pv6xecdn_Gemini_Generated_Image_u599ppu599ppu599%20%281%29.png');
-}
-
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
 }
 
 html, body, #root {
@@ -33,10 +27,12 @@ html, body, #root {
   padding: 0;
   min-height: 100vh;
   min-height: 100dvh;
-  background: var(--bg-deep) var(--bg-texture);
+  background-color: #022c22;
+  background-image: url('https://customer-assets.emergentagent.com/job_web-app-enhance-1/artifacts/pv6xecdn_Gemini_Generated_Image_u599ppu599ppu599%20%281%29.png');
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
+  background-repeat: no-repeat;
   color: var(--text-primary);
   font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
