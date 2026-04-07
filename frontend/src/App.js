@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   Home, CheckSquare, Compass, BarChart3, Check, 
   ChevronRight, ChevronDown, RotateCcw, MapPin, Play, Pause, X,
-  Volume2, ExternalLink, Moon, Cloud, CloudOff, User, LogOut
+  Volume2, ExternalLink, Moon, Cloud, CloudOff, User, LogOut, Sun
 } from "lucide-react";
 import "@/App.css";
 import { 
@@ -109,6 +109,18 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(() => api.isAuthenticated());
   const [syncEnabled, setSyncEnabled] = useState(() => api.isAuthenticated());
   const [lastSync, setLastSync] = useState(null);
+  
+  // Theme
+  const [theme, setTheme] = useState(() => localStorage.getItem('niyyah_theme') || 'dark');
+  
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('niyyah_theme', theme);
+  }, [theme]);
+  
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
   
   // Dynamic date check
   useEffect(() => {
@@ -963,6 +975,19 @@ function App() {
             </div>
             <div className="flex items-center gap-2">
               {isRamadanMode && <span className="text-amber-500 text-xl">🌙</span>}
+              
+              {/* Theme toggle */}
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-all"
+                title={theme === 'dark' ? 'Mode clair' : 'Mode sombre'}
+              >
+                {theme === 'dark' ? (
+                  <Sun className="w-4 h-4 text-amber-400" />
+                ) : (
+                  <Moon className="w-4 h-4 text-slate-600" />
+                )}
+              </button>
               
               {/* Sync indicator */}
               {isAuthenticated && (

@@ -117,3 +117,37 @@ html, body, #root {
 .progress-animate {
   transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+
+
+/* Light Theme */
+[data-theme="light"] {
+  --bg-deep: #f8fafc;
+  --bg-card: rgba(15, 23, 42, 0.05);
+  --border-glass: rgba(15, 23, 42, 0.1);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+}
+
+[data-theme="light"] html,
+[data-theme="light"] body,
+[data-theme="light"] #root {
+  background: linear-gradient(to bottom, #f8fafc 0%, #e2e8f0 100%);
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .islamic-bg {
+  background-image: 
+    linear-gradient(to bottom, rgba(248, 250, 252, 0.95), rgba(226, 232, 240, 0.85)),
+    url('https://static.prod-images.emergentagent.com/jobs/d203468f-c7b3-4ee2-8b1a-34e48ae4f8c8/images/b809a4fcf387f9d219b6ee1c31e9eb1c291acbc99f568a9b287f252bb2e66911.png');
+}
+
+[data-theme="light"] .glass-card {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.2);
+}
