@@ -225,21 +225,60 @@ function App() {
     const level = LEVELS.find(l => l.id === currentLevel);
     if (!level) return 0;
     const items = level.sections.flatMap(sec => sec.items);
-    let totalWeight = 0, doneWeight = 0;
-    items.forEach(item => {
+    
+    // Séparer les items obligatoires et optionnels
+    const requiredItems = items.filter(item => !item.optional);
+    const optionalItems = items.filter(item => item.optional);
+    
+    let requiredTotal = 0, requiredDone = 0;
+    let optionalTotal = 0, optionalDone = 0;
+    
+    // Calculer le score des items obligatoires
+    requiredItems.forEach(item => {
       const weight = item.weight || 1;
-      totalWeight += weight;
+      requiredTotal += weight;
+      
+      let isDone = false;
       if (item.type === 'wird') {
         const session = item.session;
         const wirdItems = WIRD_DATA[session]?.items || [];
-        if (wirdItems.every(wi => wirdState[session]?.[wi.id])) doneWeight += weight;
+        isDone = wirdItems.every(wi => wirdState[session]?.[wi.id]);
       } else if (item.type === 'counter') {
-        if ((counters[item.id] || 0) >= item.target) doneWeight += weight;
+        isDone = (counters[item.id] || 0) >= item.target;
       } else {
-        if (s[item.id]) doneWeight += weight;
+        isDone = !!s[item.id];
       }
+      
+      if (isDone) requiredDone += weight;
     });
-    return totalWeight > 0 ? Math.round((doneWeight / totalWeight) * 100) : 0;
+    
+    // Calculer le score des items optionnels (bonus)
+    optionalItems.forEach(item => {
+      const weight = item.weight || 1;
+      optionalTotal += weight;
+      
+      let isDone = false;
+      if (item.type === 'wird') {
+        const session = item.session;
+        const wirdItems = WIRD_DATA[session]?.items || [];
+        isDone = wirdItems.every(wi => wirdState[session]?.[wi.id]);
+      } else if (item.type === 'counter') {
+        isDone = (counters[item.id] || 0) >= item.target;
+      } else {
+        isDone = !!s[item.id];
+      }
+      
+      if (isDone) optionalDone += weight;
+    });
+    
+    // Score de base (0-100%) basé sur les items obligatoires
+    const baseScore = requiredTotal > 0 ? (requiredDone / requiredTotal) * 100 : 0;
+    
+    // Bonus (0-20%) basé sur les items optionnels
+    const bonusScore = optionalTotal > 0 ? (optionalDone / optionalTotal) * 20 : 0;
+    
+    // Score total plafonné à 120%
+    return Math.min(Math.round(baseScore + bonusScore), 120);
   }, [currentLevel, wirdState, counters]);
   
   // Toggle item
