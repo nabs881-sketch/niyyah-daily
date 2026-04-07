@@ -1339,13 +1339,27 @@ function App() {
                   <button className="flex-1 py-3 rounded-xl btn-primary text-lg font-serif">بِسْمِ اللَّهِ</button>
                 </div>
                 
-                {!isRamadanMode && (
-                  <div className="glass-card p-6 border-2 border-amber-500/30 mt-6">
-                    <div className="text-center mb-4">
-                      <Moon className="w-12 h-12 text-amber-500 mx-auto mb-3" />
-                      <h3 className="font-heading text-xl text-white mb-2">Mode Ramadan</h3>
-                      <p className="text-slate-400 text-sm">Suivi des 30 jours + items spéciaux</p>
-                    </div>
+                {/* BOUTON RAMADAN - TOUJOURS VISIBLE */}
+                <div className="glass-card p-6 border-2 border-amber-500/30 mt-6">
+                  <div className="text-center mb-4">
+                    <Moon className="w-12 h-12 text-amber-500 mx-auto mb-3" />
+                    <h3 className="font-heading text-xl text-white mb-2">Mode Ramadan</h3>
+                    <p className="text-slate-400 text-sm">
+                      {isRamadanMode ? 'Mode Ramadan actif' : 'Suivi des 30 jours + items spéciaux'}
+                    </p>
+                  </div>
+                  {isRamadanMode ? (
+                    <button 
+                      onClick={() => {
+                        const newState = { ...ramadanState, active: false }; 
+                        setRamadanState(newState); 
+                        saveRamadanState(newState);
+                      }} 
+                      className="w-full py-4 px-6 rounded-xl border-2 border-red-500 bg-red-500/30 text-red-200 text-lg font-bold hover:bg-red-500/40 transition-all"
+                    >
+                      ❌ Désactiver Ramadan
+                    </button>
+                  ) : (
                     <button 
                       onClick={() => {
                         const newState = { ...ramadanState, active: true, startDate: getToday() }; 
@@ -1357,8 +1371,8 @@ function App() {
                     >
                       🌙 Activer le mode Ramadan
                     </button>
-                  </div>
-                )}
+                  )}
+                </div>
               </motion.div>
             )}
             
