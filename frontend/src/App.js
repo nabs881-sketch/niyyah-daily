@@ -1096,34 +1096,33 @@ function App() {
                 )}
                 
                 {/* Friday Banner */}
-                {/* Friday Special - Toujours visible */}
-                <div className="glass-card p-6 mb-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-3">
+                {/* Friday Special - SEULEMENT LE VENDREDI */}
+                {isFriday() && (
+                  <div className="glass-card p-6 mb-6">
+                    <div className="flex items-center gap-3 mb-4">
                       <span className="text-2xl">🕌</span>
                       <div>
-                        <h3 className="font-heading text-lg text-amber-500">Spécial Vendredi</h3>
+                        <h3 className="font-heading text-lg text-amber-500">Jumua Mubarak ✨</h3>
                         <p className="text-slate-500 text-xs">Le meilleur jour de la semaine</p>
                       </div>
                     </div>
-                    {isFriday() && <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-500 text-xs font-bold">AUJOURD'HUI</span>}
+                    <div className="space-y-2">
+                      {FRIDAY_ITEMS.map(item => (
+                        <button key={item.id} onClick={() => toggleFridayItem(item.id)} className={`w-full flex items-center gap-3 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-left transition-all hover:bg-amber-500/20 ${fridayState[item.id] ? 'opacity-50' : ''}`}>
+                          <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${fridayState[item.id] ? 'bg-amber-500 border-amber-500' : 'border-amber-500/40'}`}>
+                            {fridayState[item.id] && <Check className="w-3 h-3 text-black" />}
+                          </div>
+                          <div className="flex-1">
+                            <div className={`text-sm font-medium ${fridayState[item.id] ? 'line-through text-slate-500' : 'text-amber-500'}`}>{item.label}</div>
+                            <div className="text-xs text-slate-500">{item.sub}</div>
+                          </div>
+                          {item.audio && <button onClick={(e) => { e.stopPropagation(); playAudio(item.audio); }} className={`w-7 h-7 rounded-full flex items-center justify-center ${playingAudio === item.audio ? 'bg-amber-500 text-black' : 'bg-amber-500/20 text-amber-500'}`}><Volume2 className="w-3 h-3" /></button>}
+                          <span className="font-arabic text-amber-500/50 text-sm">{item.arabic}</span>
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    {FRIDAY_ITEMS.map(item => (
-                      <button key={item.id} onClick={() => toggleFridayItem(item.id)} className={`w-full flex items-center gap-3 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-left transition-all hover:bg-amber-500/20 ${fridayState[item.id] ? 'opacity-50' : ''}`}>
-                        <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${fridayState[item.id] ? 'bg-amber-500 border-amber-500' : 'border-amber-500/40'}`}>
-                          {fridayState[item.id] && <Check className="w-3 h-3 text-black" />}
-                        </div>
-                        <div className="flex-1">
-                          <div className={`text-sm font-medium ${fridayState[item.id] ? 'line-through text-slate-500' : 'text-amber-500'}`}>{item.label}</div>
-                          <div className="text-xs text-slate-500">{item.sub}</div>
-                        </div>
-                        {item.audio && <button onClick={(e) => { e.stopPropagation(); playAudio(item.audio); }} className={`w-7 h-7 rounded-full flex items-center justify-center ${playingAudio === item.audio ? 'bg-amber-500 text-black' : 'bg-amber-500/20 text-amber-500'}`}><Volume2 className="w-3 h-3" /></button>}
-                        <span className="font-arabic text-amber-500/50 text-sm">{item.arabic}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
+                )}
                 
                 {/* Hadith */}
                 <div className="glass-card p-4">
@@ -1361,6 +1360,28 @@ function App() {
                   <button onClick={() => { const newState = { _date: state._date, _unlocked: state._unlocked }; setState(newState); saveState(newState); setCounters({ istighfar: 0, tasbih: 0 }); saveCounters({ istighfar: 0, tasbih: 0 }); setWirdState({ matin: {}, soir: {} }); saveWirdState('matin', {}); saveWirdState('soir', {}); }} className="px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-slate-400">↺ Reset</button>
                   <button className="flex-1 py-3 rounded-xl btn-primary text-lg font-serif">بِسْمِ اللَّهِ</button>
                 </div>
+                
+                {/* BOUTON ACTIVER RAMADAN */}
+                {!isRamadanMode && (
+                  <div className="glass-card p-6 border-2 border-amber-500/30 mt-6">
+                    <div className="text-center mb-4">
+                      <Moon className="w-12 h-12 text-amber-500 mx-auto mb-3" />
+                      <h3 className="font-heading text-xl text-white mb-2">Mode Ramadan</h3>
+                      <p className="text-slate-400 text-sm">Suivi des 30 jours + items spéciaux</p>
+                    </div>
+                    <button 
+                      onClick={() => {
+                        const newState = { ...ramadanState, active: true, startDate: getToday() }; 
+                        setRamadanState(newState); 
+                        saveRamadanState(newState);
+                        setActiveTab('ramadan');
+                      }} 
+                      className="w-full py-4 px-6 rounded-xl border-2 border-amber-500 bg-gradient-to-r from-amber-500/30 to-amber-600/30 text-amber-200 text-lg font-bold hover:from-amber-500/40 hover:to-amber-600/40 transition-all active:scale-95 shadow-lg shadow-amber-500/20"
+                    >
+                      🌙 Activer le mode Ramadan
+                    </button>
+                  </div>
+                )}
               </motion.div>
             )}
             
