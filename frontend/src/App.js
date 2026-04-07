@@ -1054,6 +1054,17 @@ function App() {
             {/* ACCUEIL TAB */}
             {activeTab === 'accueil' && (
               <motion.div key="accueil" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-3">
+                
+                {/* BANNIÈRE NIYYAH */}
+                <div className="relative w-full h-48 rounded-2xl overflow-hidden shadow-2xl">
+                  <img 
+                    src="https://customer-assets.emergentagent.com/job_web-app-enhance-1/artifacts/v3fs1xde_banner.png" 
+                    alt="Niyyah - Pratique & Élévation"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20"></div>
+                </div>
+                
                 {/* Hero Card */}
                 <div className="glass-card p-5 relative overflow-hidden">
                   <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
