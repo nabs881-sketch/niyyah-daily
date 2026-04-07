@@ -952,6 +952,28 @@ function App() {
             <button onClick={() => { if (meditationRunning) { setMeditationRunning(false); } else { setMeditationLeft(meditationTime); setMeditationRunning(true); }}} className="w-16 h-16 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 flex items-center justify-center">
               {meditationRunning ? <Pause className="w-6 h-6 text-black" /> : <Play className="w-6 h-6 text-black ml-1" />}
             </button>
+            
+            {/* Nasheed player */}
+            <div className="mt-8 glass-card p-4 rounded-xl flex items-center gap-3 max-w-sm">
+              <button 
+                onClick={() => {
+                  const url = 'https://customer-assets.emergentagent.com/job_web-app-enhance-1/artifacts/5j2nffxo_rahatal-qulub.mp3';
+                  if (playingAudio === url) {
+                    audioRef.current.pause();
+                    setPlayingAudio(null);
+                  } else {
+                    playAudio(url);
+                  }
+                }}
+                className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${playingAudio === 'https://customer-assets.emergentagent.com/job_web-app-enhance-1/artifacts/5j2nffxo_rahatal-qulub.mp3' ? 'bg-emerald-500 text-black' : 'bg-white/10 text-white'}`}
+              >
+                {playingAudio === 'https://customer-assets.emergentagent.com/job_web-app-enhance-1/artifacts/5j2nffxo_rahatal-qulub.mp3' ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ml-0.5" />}
+              </button>
+              <div className="text-left">
+                <div className="text-white text-sm font-medium">Rahatat al-Qulub</div>
+                <div className="text-slate-400 text-xs">Nasheed de méditation</div>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
