@@ -121,33 +121,127 @@ html, body, #root {
 
 /* Light Theme */
 [data-theme="light"] {
-  --bg-deep: #f8fafc;
-  --bg-card: rgba(15, 23, 42, 0.05);
-  --border-glass: rgba(15, 23, 42, 0.1);
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
+  --bg-deep: #f5f3ef;
+  --bg-card: rgba(255, 255, 255, 0.95);
+  --border-glass: rgba(139, 92, 46, 0.15);
+  --text-primary: #2c3e2f;
+  --text-secondary: #5a6c5b;
+  --text-muted: #8b9a8c;
 }
 
 [data-theme="light"] html,
 [data-theme="light"] body,
 [data-theme="light"] #root {
-  background: linear-gradient(to bottom, #f8fafc 0%, #e2e8f0 100%);
+  background: linear-gradient(135deg, #f5f3ef 0%, #e8e6e0 50%, #ede9e0 100%);
   color: var(--text-primary);
 }
 
 [data-theme="light"] .islamic-bg {
   background-image: 
-    linear-gradient(to bottom, rgba(248, 250, 252, 0.95), rgba(226, 232, 240, 0.85)),
-    url('https://static.prod-images.emergentagent.com/jobs/d203468f-c7b3-4ee2-8b1a-34e48ae4f8c8/images/b809a4fcf387f9d219b6ee1c31e9eb1c291acbc99f568a9b287f252bb2e66911.png');
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 35px,
+      rgba(139, 92, 46, 0.02) 35px,
+      rgba(139, 92, 46, 0.02) 70px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 35px,
+      rgba(16, 185, 129, 0.02) 35px,
+      rgba(16, 185, 129, 0.02) 70px
+    ),
+    linear-gradient(135deg, #f5f3ef 0%, #e8e6e0 50%, #ede9e0 100%);
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 [data-theme="light"] .glass-card {
-  background: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(15, 23, 42, 0.1);
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.95) 100%);
+  border: 1px solid rgba(139, 92, 46, 0.12);
+  box-shadow: 
+    0 4px 20px rgba(139, 92, 46, 0.08),
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+[data-theme="light"] .glass-card:hover {
+  border-color: rgba(139, 92, 46, 0.25);
+  box-shadow: 
+    0 8px 30px rgba(139, 92, 46, 0.12),
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
 [data-theme="light"] ::-webkit-scrollbar-thumb {
-  background: rgba(15, 23, 42, 0.2);
+  background: rgba(139, 92, 46, 0.3);
+}
+
+[data-theme="light"] .btn-primary {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+[data-theme="light"] .btn-primary:hover {
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+}
+
+/* Améliorer le texte en mode clair */
+[data-theme="light"] .text-white {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="light"] .text-slate-400,
+[data-theme="light"] .text-slate-500 {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="light"] .text-slate-300 {
+  color: var(--text-muted) !important;
+}
+
+/* Améliorer les bordures */
+[data-theme="light"] .border-white\/10,
+[data-theme="light"] .border-white\/5 {
+  border-color: rgba(139, 92, 46, 0.15) !important;
+}
+
+/* Améliorer les backgrounds */
+[data-theme="light"] .bg-white\/5,
+[data-theme="light"] .bg-white\/10 {
+  background-color: rgba(255, 255, 255, 0.6) !important;
+}
+
+[data-theme="light"] .bg-emerald-500\/10 {
+  background-color: rgba(16, 185, 129, 0.12) !important;
+}
+
+[data-theme="light"] .bg-emerald-500\/20 {
+  background-color: rgba(16, 185, 129, 0.18) !important;
+}
+
+/* Gold accents pour mode clair */
+[data-theme="light"] .gold-glow {
+  box-shadow: 0 0 20px rgba(217, 119, 6, 0.3);
+}
+
+[data-theme="light"] .text-emerald-500 {
+  color: #059669 !important;
+}
+
+[data-theme="light"] .bg-emerald-500 {
+  background-color: #10b981 !important;
+}
+
+/* Pattern overlay subtil */
+[data-theme="light"] .pattern-overlay {
+  background-image: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(139, 92, 46, 0.03) 10px,
+      rgba(139, 92, 46, 0.03) 20px
+    );
 }
