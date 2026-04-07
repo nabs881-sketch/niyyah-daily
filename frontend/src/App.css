@@ -1,34 +1,103 @@
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
+/* App styles - complement to Tailwind */
+
+/* Main app container */
+.App {
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
-}
-
+/* Header styles */
 .App-header {
-    background-color: #0f0f10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+  background-color: transparent;
 }
 
-.App-link {
-    color: #61dafb;
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+/* Better focus states */
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid #d97706;
+  outline-offset: 2px;
+}
+
+/* Disable pull-to-refresh on mobile */
+body {
+  overscroll-behavior-y: contain;
+}
+
+/* Islamic pattern overlay */
+.pattern-overlay {
+  background-image: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(251, 191, 36, 0.02) 10px,
+      rgba(251, 191, 36, 0.02) 20px
+    );
+}
+
+/* Card hover effects */
+.glass-card:hover {
+  border-color: rgba(251, 191, 36, 0.2);
+}
+
+/* Smooth transitions for all interactive elements */
+button, a, input {
+  transition: all 0.2s ease;
+}
+
+/* Arabic text styling */
+.font-arabic {
+  font-family: 'Amiri', 'Traditional Arabic', 'Noto Naskh Arabic', serif;
+  line-height: 1.8;
+}
+
+/* Loading shimmer effect */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Compass needle animation */
+@keyframes needlePulse {
+  0%, 100% { filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.5)); }
+  50% { filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.8)); }
+}
+
+.compass-needle {
+  animation: needlePulse 2s ease-in-out infinite;
+}
+
+/* Badge glow */
+.badge-glow {
+  box-shadow: 
+    0 0 10px rgba(251, 191, 36, 0.3),
+    0 0 20px rgba(251, 191, 36, 0.2),
+    0 0 30px rgba(251, 191, 36, 0.1);
+}
+
+/* Safe area for notched devices */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .pb-safe {
+    padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  }
+  
+  nav.fixed {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 }
