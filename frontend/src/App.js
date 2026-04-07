@@ -1587,8 +1587,8 @@ function App() {
       </div>
       
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 backdrop-blur-xl bg-[#022c22]/90 border-t border-white/10 z-50" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 20px)' }}>
-        <div className="max-w-lg mx-auto flex justify-around py-2">
+      <nav className="fixed bottom-0 left-0 right-0 backdrop-blur-xl bg-gradient-to-t from-[#022c22]/60 to-transparent border-t border-white/5 z-50" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 12px)' }}>
+        <div className="max-w-lg mx-auto flex justify-around py-1">
           {[
             { id: 'accueil', icon: Home, label: 'Accueil' },
             { id: 'checklist', icon: CheckSquare, label: 'Pratique' },
