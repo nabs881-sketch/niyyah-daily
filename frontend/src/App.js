@@ -13,7 +13,7 @@ import {
   loadCurrentLevel, saveCurrentLevel, isOnboardDone, setOnboardDone,
   getToday, getDateMinus, formatDateFr, loadRamadanState, saveRamadanState
 } from "@/lib/storage";
-import { LEVELS, WIRD_DATA, BADGES, HADITHS, INTENTIONS, MEDITATION_PHRASES, FRIDAY_ITEMS, RAMADAN_ITEMS, SOURATES, isFriday, WEEKLY_HADITHS, ITEM_INFO } from "@/lib/data";
+import { LEVELS, WIRD_DATA, BADGES, HADITHS, NIYYAH_HADITHS, INTENTIONS, MEDITATION_PHRASES, FRIDAY_ITEMS, RAMADAN_ITEMS, SOURATES, isFriday, WEEKLY_HADITHS, ITEM_INFO } from "@/lib/data";
 import { api, syncToCloud, syncFromCloud } from "@/lib/api";
 
 // API for prayer times
@@ -113,10 +113,21 @@ function App() {
   // Theme
   const [theme, setTheme] = useState(() => localStorage.getItem('niyyah_theme') || 'dark');
   
+  // Hadith defilant
+  const [currentHadithIndex, setCurrentHadithIndex] = useState(0);
+  
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('niyyah_theme', theme);
   }, [theme]);
+  
+  // Rotation des hadiths sur l'intention toutes les 8 secondes
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentHadithIndex(prev => (prev + 1) % NIYYAH_HADITHS.length);
+    }, 8000);
+    return () => clearInterval(interval);
+  }, []);
   
   const toggleTheme = () => {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark');
@@ -1090,6 +1101,45 @@ function App() {
             <motion.div className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full" initial={{ width: 0 }} animate={{ width: `${score}%` }} transition={{ duration: 0.5 }} />
           </div>
         </header>
+        
+        {/* Intention & Hadith Banner */}
+        {intention && (
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mx-5 mt-3 mb-2 glass-card p-3 border-l-4 border-amber-500/50"
+          >
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-xl">{INTENTIONS.find(i => i.type === intention)?.icon || '🌙'}</span>
+              <div className="flex-1">
+                <p className="text-white text-sm font-medium">
+                  {INTENTIONS.find(i => i.type === intention)?.label || 'Mon intention'}
+                </p>
+                <p className="text-amber-500/70 text-[10px] font-arabic">
+                  {INTENTIONS.find(i => i.type === intention)?.arabic}
+                </p>
+              </div>
+            </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentHadithIndex}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.5 }}
+                className="border-t border-white/5 pt-2 mt-2"
+              >
+                <p className="text-amber-500/90 text-xs font-arabic leading-relaxed mb-1">
+                  {NIYYAH_HADITHS[currentHadithIndex].arabic}
+                </p>
+                <p className="text-slate-300 text-[11px] italic leading-snug mb-1">
+                  {NIYYAH_HADITHS[currentHadithIndex].text}
+                </p>
+                <p className="text-slate-500 text-[9px]">— {NIYYAH_HADITHS[currentHadithIndex].ref}</p>
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
+        )}
         
         {/* Level Tabs */}
         <div className="sticky top-[72px] z-30 bg-[#022c22]/80 backdrop-blur-xl px-4 py-2 border-b border-white/5">

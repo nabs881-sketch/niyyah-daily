@@ -201,6 +201,45 @@ export const HADITHS = [
   { text: "Souris à ton frère, c'est une aumône.", ref: "Tirmidhi 1956" },
 ];
 
+// Hadiths spécifiques sur l'intention (Niyyah) qui défilent
+export const NIYYAH_HADITHS = [
+  {
+    arabic: "إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ",
+    text: "Les actes ne valent que par les intentions, et chacun n'aura que ce qu'il a eu l'intention de faire",
+    ref: "Bukhari 1"
+  },
+  {
+    arabic: "مَنْ كَانَتْ هِجْرَتُهُ إِلَى اللَّهِ وَرَسُولِهِ",
+    text: "Celui dont l'émigration est pour Allah et Son Messager, son émigration est vraiment pour Allah et Son Messager",
+    ref: "Bukhari 1"
+  },
+  {
+    arabic: "نِيَّةُ الْمُؤْمِنِ خَيْرٌ مِنْ عَمَلِهِ",
+    text: "L'intention du croyant est meilleure que son acte",
+    ref: "Tabarani"
+  },
+  {
+    arabic: "إِنَّ اللَّهَ لَا يَنْظُرُ إِلَى صُوَرِكُمْ",
+    text: "Allah ne regarde ni vos apparences ni vos corps, mais Il regarde vos cœurs et vos intentions",
+    ref: "Muslim 2564"
+  },
+  {
+    arabic: "مَا أَخْلَصَ عَبْدٌ لِلَّهِ أَرْبَعِينَ يَوْمًا",
+    text: "Celui qui purifie son intention pour Allah pendant 40 jours, des sources de sagesse jaillissent de son cœur",
+    ref: "Abu Nu'aym"
+  },
+  {
+    arabic: "الدُّنْيَا مَلْعُونَةٌ",
+    text: "Ce monde est maudit sauf le rappel d'Allah et ce qui est fait avec une intention sincère pour Lui",
+    ref: "Tirmidhi 2322"
+  },
+  {
+    arabic: "مَنْ صَلَّى الْفَجْرَ فَهُوَ فِي ذِمَّةِ اللَّهِ",
+    text: "Celui qui accomplit Fajr avec l'intention sincère est sous la protection d'Allah toute la journée",
+    ref: "Muslim 657"
+  }
+];
+
 export const INTENTIONS = [
   { type: 'rapprochement', icon: '🌙', label: "Me rapprocher d'Allah", arabic: 'إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ', sub: 'Les actes valent par leurs intentions' },
   { type: 'engagement', icon: '⚖️', label: 'Tenir mes engagements', arabic: 'أَحَبُّ الْأَعْمَالِ', sub: "L'acte aimé d'Allah est le plus régulier" },

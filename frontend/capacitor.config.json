@@ -1,0 +1,14 @@
+{
+  "appId": "com.niyyah.daily",
+  "appName": "Niyyah Daily",
+  "webDir": "build",
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true
+  },
+  "android": {
+    "buildOptions": {
+      "releaseType": "APK"
+    }
+  }
+}
