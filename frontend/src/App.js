@@ -1176,28 +1176,6 @@ function App() {
                   <button onClick={() => setActiveTab('stats')} className="flex-1 py-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-500 font-semibold">📊 Bilan</button>
                 </div>
                 
-                {/* Ramadan Activate */}
-                {!isRamadanMode && (
-                  <div className="glass-card p-6 mb-6">
-                    <div className="flex items-center gap-3 mb-3">
-                      <Moon className="w-6 h-6 text-amber-500" />
-                      <h3 className="font-heading text-lg text-amber-500">Mode Ramadan</h3>
-                    </div>
-                    <p className="text-slate-400 text-sm mb-4">Active le suivi des 30 jours de Ramadan avec items spéciaux</p>
-                    <button 
-                      onClick={() => { 
-                        const newState = { ...ramadanState, active: true, startDate: getToday() }; 
-                        setRamadanState(newState); 
-                        saveRamadanState(newState);
-                        setActiveTab('accueil');
-                        setTimeout(() => setActiveTab('ramadan'), 100);
-                      }} 
-                      className="w-full py-3 rounded-xl border-2 border-amber-500/50 bg-amber-500/20 text-amber-400 font-bold hover:bg-amber-500/30 hover:border-amber-500 transition-all"
-                    >
-                      🌙 Activer le mode Ramadan
-                    </button>
-                  </div>
-                )}
               </motion.div>
             )}
             
