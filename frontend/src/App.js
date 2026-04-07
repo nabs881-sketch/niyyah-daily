@@ -1096,30 +1096,34 @@ function App() {
                 )}
                 
                 {/* Friday Banner */}
-                {isFriday() && (
-                  <div className="glass-card p-4 border border-amber-500/30 bg-amber-500/5">
-                    <div className="flex items-center gap-3 mb-3">
+                {/* Friday Special - Toujours visible */}
+                <div className="glass-card p-6 mb-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-3">
                       <span className="text-2xl">🕌</span>
                       <div>
-                        <div className="text-amber-500 font-semibold">Jumua Mubarak</div>
-                        <div className="text-slate-500 text-sm">Jour béni</div>
+                        <h3 className="font-heading text-lg text-amber-500">Spécial Vendredi</h3>
+                        <p className="text-slate-500 text-xs">Le meilleur jour de la semaine</p>
                       </div>
                     </div>
-                    <div className="space-y-2">
-                      {FRIDAY_ITEMS.slice(0, 3).map(item => (
-                        <button key={item.id} onClick={() => toggleFridayItem(item.id)} className={`w-full flex items-center gap-3 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-left ${fridayState[item.id] ? 'opacity-50' : ''}`}>
-                          <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${fridayState[item.id] ? 'bg-amber-500 border-amber-500' : 'border-amber-500/40'}`}>
-                            {fridayState[item.id] && <Check className="w-3 h-3 text-black" />}
-                          </div>
-                          <div className="flex-1">
-                            <div className={`text-sm font-medium ${fridayState[item.id] ? 'line-through text-slate-500' : 'text-amber-500'}`}>{item.label}</div>
-                          </div>
-                          <span className="font-arabic text-amber-500/50 text-sm">{item.arabic}</span>
-                        </button>
-                      ))}
-                    </div>
+                    {isFriday() && <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-500 text-xs font-bold">AUJOURD'HUI</span>}
                   </div>
-                )}
+                  <div className="space-y-2">
+                    {FRIDAY_ITEMS.map(item => (
+                      <button key={item.id} onClick={() => toggleFridayItem(item.id)} className={`w-full flex items-center gap-3 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-left transition-all hover:bg-amber-500/20 ${fridayState[item.id] ? 'opacity-50' : ''}`}>
+                        <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${fridayState[item.id] ? 'bg-amber-500 border-amber-500' : 'border-amber-500/40'}`}>
+                          {fridayState[item.id] && <Check className="w-3 h-3 text-black" />}
+                        </div>
+                        <div className="flex-1">
+                          <div className={`text-sm font-medium ${fridayState[item.id] ? 'line-through text-slate-500' : 'text-amber-500'}`}>{item.label}</div>
+                          <div className="text-xs text-slate-500">{item.sub}</div>
+                        </div>
+                        {item.audio && <button onClick={(e) => { e.stopPropagation(); playAudio(item.audio); }} className={`w-7 h-7 rounded-full flex items-center justify-center ${playingAudio === item.audio ? 'bg-amber-500 text-black' : 'bg-amber-500/20 text-amber-500'}`}><Volume2 className="w-3 h-3" /></button>}
+                        <span className="font-arabic text-amber-500/50 text-sm">{item.arabic}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 
                 {/* Hadith */}
                 <div className="glass-card p-4">
@@ -1175,9 +1179,25 @@ function App() {
                 
                 {/* Ramadan Activate */}
                 {!isRamadanMode && (
-                  <button onClick={() => { const newState = { ...ramadanState, active: true, startDate: getToday() }; setRamadanState(newState); saveRamadanState(newState); }} className="w-full py-3 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-500 font-semibold flex items-center justify-center gap-2">
-                    <Moon className="w-5 h-5" /> Activer le mode Ramadan
-                  </button>
+                  <div className="glass-card p-6 mb-6">
+                    <div className="flex items-center gap-3 mb-3">
+                      <Moon className="w-6 h-6 text-amber-500" />
+                      <h3 className="font-heading text-lg text-amber-500">Mode Ramadan</h3>
+                    </div>
+                    <p className="text-slate-400 text-sm mb-4">Active le suivi des 30 jours de Ramadan avec items spéciaux</p>
+                    <button 
+                      onClick={() => { 
+                        const newState = { ...ramadanState, active: true, startDate: getToday() }; 
+                        setRamadanState(newState); 
+                        saveRamadanState(newState);
+                        setActiveTab('accueil');
+                        setTimeout(() => setActiveTab('ramadan'), 100);
+                      }} 
+                      className="w-full py-3 rounded-xl border-2 border-amber-500/50 bg-amber-500/20 text-amber-400 font-bold hover:bg-amber-500/30 hover:border-amber-500 transition-all"
+                    >
+                      🌙 Activer le mode Ramadan
+                    </button>
+                  </div>
                 )}
               </motion.div>
             )}
