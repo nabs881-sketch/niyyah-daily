@@ -359,8 +359,15 @@ function App() {
         setPlayingAudio(null);
       } else {
         audioRef.current.src = url;
-        audioRef.current.play();
-        setPlayingAudio(url);
+        audioRef.current.play()
+          .then(() => {
+            setPlayingAudio(url);
+          })
+          .catch((error) => {
+            console.log('Audio playback failed:', error);
+            // Try again with user interaction
+            setPlayingAudio(url);
+          });
       }
     }
   };
