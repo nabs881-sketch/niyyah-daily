@@ -976,8 +976,12 @@ function App() {
         {/* Header */}
         <header className="sticky top-0 z-40 px-5 pt-4 pb-3 backdrop-blur-xl bg-[#022c22]/80 border-b border-white/5">
           <div className="flex items-center justify-between mb-3">
-            <div>
-              <h1 className="font-heading text-2xl text-white">Niyyah Daily <span className="text-emerald-500 text-lg">✦</span></h1>
+            <div className="flex items-center gap-3">
+              <img 
+                src="https://customer-assets.emergentagent.com/job_web-app-enhance-1/artifacts/v3fs1xde_banner.png" 
+                alt="Niyyah - Pratique & Élévation"
+                className="h-12 w-auto object-contain"
+              />
               <p className="text-[10px] text-slate-500 uppercase tracking-widest">{formatDateFr(getToday())}</p>
             </div>
             <div className="flex items-center gap-2">
@@ -1054,17 +1058,6 @@ function App() {
             {/* ACCUEIL TAB */}
             {activeTab === 'accueil' && (
               <motion.div key="accueil" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-3">
-                
-                {/* BANNIÈRE NIYYAH */}
-                <div className="relative w-full h-48 rounded-2xl overflow-hidden shadow-2xl">
-                  <img 
-                    src="https://customer-assets.emergentagent.com/job_web-app-enhance-1/artifacts/v3fs1xde_banner.png" 
-                    alt="Niyyah - Pratique & Élévation"
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20"></div>
-                </div>
-                
                 {/* Hero Card */}
                 <div className="glass-card p-5 relative overflow-hidden">
                   <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
