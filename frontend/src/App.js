@@ -122,6 +122,40 @@ function App() {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark');
   };
   
+  // Swipe entre onglets
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+  
+  const handleTouchStart = (e) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+  
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+  
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+    
+    const tabs = isRamadanMode ? ['accueil', 'checklist', 'ramadan', 'stats'] : ['accueil', 'checklist', 'stats'];
+    const currentIndex = tabs.indexOf(activeTab);
+    
+    if (isLeftSwipe && currentIndex < tabs.length - 1) {
+      // Swipe gauche = onglet suivant
+      setActiveTab(tabs[currentIndex + 1]);
+    } else if (isRightSwipe && currentIndex > 0) {
+      // Swipe droite = onglet précédent
+      setActiveTab(tabs[currentIndex - 1]);
+    }
+    
+    setTouchStart(0);
+    setTouchEnd(0);
+  };
+  
   // Dynamic date check
   useEffect(() => {
     const checkDate = () => {
@@ -1053,7 +1087,12 @@ function App() {
         </div>
         
         {/* Tab Content */}
-        <main className="p-4">
+        <main 
+          className="p-4"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           <AnimatePresence mode="wait">
             {/* ACCUEIL TAB */}
             {activeTab === 'accueil' && (
