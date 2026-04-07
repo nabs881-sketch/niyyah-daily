@@ -354,61 +354,237 @@ export const SOURATES = [
 
 // Informations détaillées pour chaque item (bouton "i")
 export const ITEM_INFO = {
+  // === PRIÈRES ===
   'fajr': {
     arabic: 'صَلَاةُ الْفَجْرِ',
     phonetic: 'Salat al-Fajr',
-    translation: 'La prière de l\'aube, deux unités avant le lever du soleil.',
-    why: 'Les deux rak\'aat du Fajr valent mieux que ce bas monde et tout ce qu\'il contient.',
-    ref: 'Sahih Muslim 725'
+    translation: 'La prière de l\'aube, deux rakaat accomplies avant le lever du soleil.',
+    why: 'Celui qui prie Fajr est sous la protection d\'Allah toute la journée.',
+    ref: 'Muslim 657'
   },
   'dhuhr': {
     arabic: 'صَلَاةُ الظُّهْرِ',
     phonetic: 'Salat adh-Dhuhr',
-    translation: 'La prière du midi, quatre unités accomplies après que le soleil a dépassé son zénith.',
-    why: 'Celle qui ouvre les portes du ciel. Les œuvres y sont présentées à Allah.',
-    ref: 'Tirmidhi 2675'
+    translation: 'La prière du milieu du jour, quatre rakaat accomplies après que le soleil a dépassé son zénith.',
+    why: 'C\'est l\'heure où les portes du ciel s\'ouvrent et les œuvres sont présentées à Allah.',
+    ref: 'At-Tirmidhi 2675'
   },
   'asr': {
     arabic: 'صَلَاةُ الْعَصْرِ',
     phonetic: 'Salat al-\'Asr',
-    translation: 'La prière de l\'après-midi, quatre unités avant le coucher du soleil.',
-    why: 'Celui qui la délaisse, c\'est comme s\'il perdait sa famille et ses biens.',
-    ref: 'Sahih Bukhari 552'
+    translation: 'La prière de l\'après-midi, quatre rakaat avant le coucher du soleil.',
+    why: 'Celui qui manque Asr, c\'est comme s\'il avait perdu sa famille et ses biens.',
+    ref: 'Bukhari 552'
   },
   'maghrib': {
     arabic: 'صَلَاةُ الْمَغْرِبِ',
     phonetic: 'Salat al-Maghrib',
-    translation: 'La prière du coucher du soleil, trois unités accomplies juste après le coucher.',
-    why: 'Le moment où les portes du pardon sont ouvertes.',
-    ref: 'Sahih Muslim 758'
+    translation: 'La prière du coucher du soleil, trois rakaat accomplies juste après le coucher.',
+    why: 'Le moment où les portes du pardon sont ouvertes — une prière bénie.',
+    ref: 'Muslim 758'
   },
   'isha': {
     arabic: 'صَلَاةُ الْعِشَاءِ',
     phonetic: 'Salat al-\'Isha',
-    translation: 'La prière de la nuit, quatre unités après la disparition de la lueur rouge.',
-    why: 'Celui qui prie al-\'Isha en commun, c\'est comme s\'il priait la moitié de la nuit.',
-    ref: 'Sahih Muslim 656'
+    translation: 'La prière de la nuit, quatre rakaat après la disparition de la lueur rouge du crépuscule.',
+    why: 'Celui qui prie Isha en jamaah a la récompense de prier la moitié de la nuit.',
+    ref: 'Muslim 656'
   },
+  
+  // === DHIKR ===
   'ayat_kursi': {
     arabic: 'آيَةُ الْكُرْسِيِّ',
     phonetic: 'Ayat al-Kursi',
-    translation: 'Allah ! Point de divinité à part Lui, le Vivant, Celui qui subsiste par Lui-même. Ni somnolence ni sommeil ne Le saisissent...',
+    translation: 'Allah ! Point de divinité à part Lui, le Vivant, Celui qui subsiste par Lui-même...',
     why: 'Celui qui la récite après chaque prière obligatoire, rien ne l\'empêche d\'entrer au Paradis sauf la mort.',
-    ref: 'An-Nasa\'i 9928'
+    ref: 'An-Nasa\'i (Sahih)'
   },
   'shukr': {
-    arabic: 'الشُّكْرُ لِلَّهِ',
+    arabic: 'الْحَمْدُ لِلَّهِ',
     phonetic: 'Alhamdulillah',
-    translation: 'Louange à Allah.',
-    why: 'La gratitude est la porte du bonheur. Plus tu remercies, plus Allah t\'accordera.',
-    ref: 'Coran 14:7'
+    translation: 'Louange à Allah. Remercier pour au moins 3 grâces du jour.',
+    why: 'Si vous êtes reconnaissants, J\'augmenterai Mes bienfaits pour vous. Médite sur les ni\'ma : un toit, un lit, ta famille, la santé, les yeux, le souffle, la nourriture, l\'eau propre, être musulman, connaître Allah, la sécurité, le Coran, chaque réveil.',
+    ref: 'Coran 14:7 + Sourate Ar-Rahman'
   },
   'basmala': {
     arabic: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
     phonetic: 'Bismillah ar-Rahman ar-Rahim',
-    translation: 'Au nom d\'Allah, le Tout Miséricordieux, le Très Miséricordieux.',
-    why: 'Toute chose d\'importance commencée sans Bismillah est amputée de sa baraka.',
-    ref: 'Hadith authentifié'
+    translation: 'Au nom d\'Allah, le Tout Miséricordieux, le Très Miséricordieux. À dire avant chaque action : manger, sortir, commencer.',
+    why: 'Tout acte important qui ne commence pas par Bismillah est coupé de sa bénédiction.',
+    ref: 'Abu Dawud (Hassan)'
+  },
+  
+  // === NIVEAU 2 ===
+  'mosquee': {
+    arabic: 'صَلَاةُ الْجَمَاعَةِ',
+    phonetic: 'Salat al-Jamaah',
+    translation: 'Prier au moins une prière à la mosquée en congrégation.',
+    why: 'La prière en jamaah vaut 27 fois plus que la prière accomplie seul.',
+    ref: 'Bukhari 645'
+  },
+  'sunnah_fajr': {
+    arabic: 'سُنَّةُ الْفَجْرِ',
+    phonetic: 'Sunnah al-Fajr',
+    translation: 'Deux rakaat avant Fajr — la sunnah la plus recommandée.',
+    why: 'Les 2 rakaat de l\'aube valent mieux que le monde et ce qu\'il contient.',
+    ref: 'Muslim 725'
+  },
+  'tahajjud': {
+    arabic: 'قِيَامُ اللَّيْلِ',
+    phonetic: 'Qiyam al-Layl',
+    translation: 'Prière nocturne accomplie dans le dernier tiers de la nuit.',
+    why: 'Notre Seigneur descend chaque nuit au tiers final — qui M\'invoque ? Je lui réponds.',
+    ref: 'Bukhari 1145'
+  },
+  'witr': {
+    arabic: 'صَلَاةُ الْوِتْرِ',
+    phonetic: 'Salat al-Witr',
+    translation: 'Prière impaire, minimum 1 rakaa, accomplie avant de dormir.',
+    why: 'Allah est impair et Il aime l\'impair — priez le Witr.',
+    ref: 'Bukhari 998'
+  },
+  'tasbih': {
+    arabic: 'سُبْحَانَ اللَّهِ · الْحَمْدُ لِلَّهِ · اللَّهُ أَكْبَرُ',
+    phonetic: 'SubhanAllah ×33, Alhamdulillah ×33, Allahu Akbar ×33, puis: La ilaha illallah wahdahu la sharika lah, lahul mulku wa lahul hamdu wa huwa ala kulli shay\'in qadir',
+    translation: 'Gloire à Allah ×33, Louange à Allah ×33, Allah est le Plus Grand ×33. Puis à 99 : "Il n\'y a de dieu qu\'Allah Seul, sans associé, à Lui la souveraineté et la louange, Il est Puissant sur toute chose"',
+    why: 'Les péchés sont effacés même s\'ils sont comme l\'écume de la mer.',
+    ref: 'Muslim 597'
+  },
+  'coran_ecoute': {
+    arabic: 'تِلَاوَةُ الْقُرْآنِ',
+    phonetic: 'Tilawat al-Quran',
+    translation: 'Choisir une sourate et l\'écouter attentivement.',
+    why: 'Récite le Coran car il intercèdera pour ses compagnons le Jour du Jugement.',
+    ref: 'Muslim 804'
+  },
+  
+  // === NIVEAU 3 ===
+  'sunnah_prieres': {
+    arabic: 'السُّنَنُ الرَّوَاتِبُ',
+    phonetic: 'As-Sunan ar-Rawatib',
+    translation: 'Les prières surérogatoires régulières (Rawatib) : 12 rakaat par jour.',
+    why: 'Celui qui prie 12 rakaat par jour, Allah lui bâtit une maison au Paradis.',
+    ref: 'Muslim 728'
+  },
+  'sunnah_jejune': {
+    arabic: 'صَوْمُ الِاثْنَيْنِ وَالْخَمِيسِ',
+    phonetic: 'Sawm al-Ithnayn wal-Khamis',
+    translation: 'Jeûner le lundi ou le jeudi — sunnah du Prophète ﷺ.',
+    why: 'Les actes sont présentés à Allah le lundi et jeudi, j\'aime jeûner ces jours-là.',
+    ref: 'Tirmidhi 747'
+  },
+  
+  // === NIVEAU 4 ===
+  'maruf': {
+    arabic: 'الْأَمْرُ بِالْمَعْرُوفِ',
+    phonetic: 'Al-Amr bil-Ma\'ruf',
+    translation: 'Inviter au bien : partager une parole utile ou rappeler Allah.',
+    why: 'La meilleure aumône est de transmettre un savoir.',
+    ref: 'Ibn Majah 239'
+  },
+  'silaturahm': {
+    arabic: 'صِلَةُ الرَّحِمِ',
+    phonetic: 'Silat ar-Rahim',
+    translation: 'Maintenir les liens familiaux : appeler ou voir un proche aujourd\'hui.',
+    why: 'Celui qui veut que sa rizq soit élargie et sa vie prolongée, qu\'il maintienne les liens familiaux.',
+    ref: 'Bukhari 5986'
+  },
+  
+  // === VENDREDI ===
+  'sourate_kahf': {
+    arabic: 'سُورَةُ الْكَهْفِ',
+    phonetic: 'Surat al-Kahf',
+    translation: 'Lire la sourate Al-Kahf le vendredi pour une protection entre deux vendredis.',
+    why: 'Celui qui lit Al-Kahf le vendredi aura une lumière entre les deux vendredis.',
+    ref: 'Al-Hakim'
+  },
+  'salawat': {
+    arabic: 'اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ',
+    phonetic: 'Allahumma salli ala Muhammad',
+    translation: 'Multiplier les bénédictions sur le Prophète ﷺ le vendredi.',
+    why: 'Le meilleur de vos jours est le vendredi — multipliez la Salawat.',
+    ref: 'Abu Dawud'
+  },
+  'doua': {
+    arabic: 'سَاعَةُ الْإِجَابَةِ',
+    phonetic: 'Sa\'at al-Ijabah',
+    translation: 'L\'heure où les douaas sont exaucées — dernière heure avant Maghrib le vendredi.',
+    why: 'Il y a une heure le vendredi où Allah exauce toute demande.',
+    ref: 'Bukhari & Muslim'
+  },
+  
+  // === WIRD MATIN ===
+  'fatiha_m': {
+    arabic: 'سُورَةُ الْفَاتِحَةِ',
+    phonetic: 'Surat al-Fatihah',
+    translation: 'L\'Ouverture — la mère du Coran. À réciter une fois le matin.',
+    why: 'La meilleure sourate du Coran, divisée entre Allah et Son serviteur.',
+    ref: 'Muslim 395'
+  },
+  'ayat_kursi_m': {
+    arabic: 'آيَةُ الْكُرْسِيِّ',
+    phonetic: 'Ayat al-Kursi',
+    translation: 'Le verset du Trône. Protection puissante contre tout mal.',
+    why: 'Le plus grand verset du Coran. Celui qui la récite le matin est protégé jusqu\'au soir.',
+    ref: 'Al-Bukhari dans Al-Adab Al-Mufrad'
+  },
+  'ikhlas_m': {
+    arabic: 'سُورَةُ الْإِخْلَاصِ',
+    phonetic: 'Surat al-Ikhlas',
+    translation: 'Le Monothéisme Pur. À réciter 3 fois.',
+    why: 'Équivaut à un tiers du Coran.',
+    ref: 'Bukhari 5013'
+  },
+  'falaq_m': {
+    arabic: 'سُورَةُ الْفَلَقِ',
+    phonetic: 'Surat al-Falaq',
+    translation: 'L\'Aube Naissante. Protection contre le mal extérieur. À réciter 3 fois.',
+    why: 'Les Muawwidhat (sourates protectrices) te protègent de tout mal.',
+    ref: 'Abu Dawud 5082'
+  },
+  'nas_m': {
+    arabic: 'سُورَةُ النَّاسِ',
+    phonetic: 'Surat an-Nas',
+    translation: 'Les Hommes. Protection contre le mal intérieur (waswas). À réciter 3 fois.',
+    why: 'Complète la protection avec Al-Falaq contre les suggestions du Shaytan.',
+    ref: 'Abu Dawud 5082'
+  },
+  
+  // === WIRD SOIR ===
+  'baqara_285': {
+    arabic: 'آمَنَ الرَّسُولُ',
+    phonetic: 'Amana ar-Rasul',
+    translation: 'Al-Baqara versets 285-286. Les derniers versets de la sourate La Vache.',
+    why: 'Celui qui récite ces deux versets la nuit, ils lui suffiront (protection complète).',
+    ref: 'Bukhari 5009'
+  },
+  'ikhlas_s': {
+    arabic: 'سُورَةُ الْإِخْلَاصِ',
+    phonetic: 'Surat al-Ikhlas',
+    translation: 'Le Monothéisme Pur. À réciter 3 fois le soir.',
+    why: 'Équivaut à un tiers du Coran.',
+    ref: 'Bukhari 5013'
+  },
+  'falaq_s': {
+    arabic: 'سُورَةُ الْفَلَقِ',
+    phonetic: 'Surat al-Falaq',
+    translation: 'L\'Aube Naissante. À réciter 3 fois le soir.',
+    why: 'Protection du soir jusqu\'au matin.',
+    ref: 'Abu Dawud 5082'
+  },
+  'nas_s': {
+    arabic: 'سُورَةُ النَّاسِ',
+    phonetic: 'Surat an-Nas',
+    translation: 'Les Hommes. À réciter 3 fois le soir.',
+    why: 'Protection contre les waswas toute la nuit.',
+    ref: 'Abu Dawud 5082'
+  },
+  'mulk': {
+    arabic: 'سُورَةُ الْمُلْكِ',
+    phonetic: 'Surat al-Mulk',
+    translation: 'La Royauté. 30 versets à réciter avant de dormir.',
+    why: 'Elle intercède pour son réciteur et le protège du châtiment de la tombe.',
+    ref: 'At-Tirmidhi 2891'
   }
 };
 
