@@ -1361,7 +1361,6 @@ function App() {
                   <button className="flex-1 py-3 rounded-xl btn-primary text-lg font-serif">بِسْمِ اللَّهِ</button>
                 </div>
                 
-                {/* BOUTON ACTIVER RAMADAN */}
                 {!isRamadanMode && (
                   <div className="glass-card p-6 border-2 border-amber-500/30 mt-6">
                     <div className="text-center mb-4">
