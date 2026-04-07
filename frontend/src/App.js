@@ -1034,7 +1034,7 @@ function App() {
                         }
                         const done = state[item.id];
                         return (
-                          <button key={item.id} onClick={() => toggleItem(item.id)} className={`w-full flex items-center gap-4 p-4 text-left transition-colors ${done ? 'bg-emerald-500/10' : ''}`} data-testid={`item-${item.id}`}>
+                          <div key={item.id} onClick={() => toggleItem(item.id)} className={`w-full flex items-center gap-4 p-4 text-left transition-colors cursor-pointer ${done ? 'bg-emerald-500/10' : ''}`} data-testid={`item-${item.id}`}>
                             <div className={`w-7 h-7 rounded-full border-2 flex items-center justify-center transition-all ${done ? 'bg-emerald-500 border-emerald-500 shadow-lg shadow-emerald-500/30' : 'border-white/20'}`}>{done && <Check className="w-4 h-4 text-white" />}</div>
                             <div className="flex-1 min-w-0">
                               <div className={`font-medium ${done ? 'text-slate-500 line-through' : 'text-white'}`}>
@@ -1046,7 +1046,7 @@ function App() {
                               {item.arabic && <div className={`font-arabic text-emerald-500/60 text-lg mt-1 ${done ? 'opacity-30' : ''}`}>{item.arabic}</div>}
                             </div>
                             {item.hasAudio && item.audio && <button onClick={(e) => { e.stopPropagation(); playAudio(item.audio); }} className={`w-7 h-7 rounded-lg flex items-center justify-center text-sm ${playingAudio === item.audio ? 'bg-emerald-500 text-black' : 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-500'}`}><Volume2 className="w-4 h-4" /></button>}
-                          </button>
+                          </div>
                         );
                       })}
                     </div>
@@ -1228,7 +1228,11 @@ function App() {
             { id: 'stats', icon: BarChart3, label: 'Stats' },
           ].map((tab) => (
             <button key={tab.id} onClick={() => tab.action ? tab.action() : setActiveTab(tab.id)} className={`flex flex-col items-center gap-1 px-4 py-2 transition-all ${activeTab === tab.id ? 'text-emerald-500' : 'text-slate-500 hover:text-slate-400'}`} data-testid={`nav-${tab.id}`}>
-              <tab.icon className={`w-6 h-6 transition-transform ${activeTab === tab.id ? 'scale-110' : ''}`} />
+              {typeof tab.icon === 'function' && tab.id === 'meditation' ? (
+                <tab.icon />
+              ) : (
+                <tab.icon className={`w-6 h-6 transition-transform ${activeTab === tab.id ? 'scale-110' : ''}`} />
+              )}
               <span className="text-[9px] uppercase tracking-wider font-semibold">{tab.label}</span>
             </button>
           ))}
