@@ -9,7 +9,14 @@ from pydantic import BaseModel, Field, ConfigDict
 from typing import List
 import uuid
 from datetime import datetime, timezone
+import sys
 
+# Add backend directory to path
+sys.path.insert(0, str(Path(__file__).parent))
+
+# Import route factories
+from routes.auth import get_auth_router
+from routes.practice import get_practice_router
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -20,7 +27,7 @@ client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
 # Create the main app without a prefix
-app = FastAPI()
+app = FastAPI(title="Niyyah Daily API", version="1.0.0")
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
@@ -65,6 +72,13 @@ async def get_status_checks():
             check['timestamp'] = datetime.fromisoformat(check['timestamp'])
     
     return status_checks
+
+# Include Niyyah Daily routes
+auth_router = get_auth_router(db)
+practice_router = get_practice_router(db)
+
+api_router.include_router(auth_router)
+api_router.include_router(practice_router)
 
 # Include the router in the main app
 app.include_router(api_router)

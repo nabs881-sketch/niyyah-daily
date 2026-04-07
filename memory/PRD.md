@@ -24,7 +24,7 @@ L'utilisateur avait une application HTML islamique "Niyyah Daily" (3070 lignes) 
 - Persistance des données (localStorage)
 - Détection dynamique du changement de jour
 
-## What's Been Implemented (Jan 2026)
+## What's Been Implemented (Jan-Apr 2026)
 - [x] **Bug fix - Date dynamique** : Vérification de la date chaque minute
 - [x] **Onboarding** : 3 étapes (logo, niveaux, ville)
 - [x] **Modal intention** : 4 choix avec icônes et texte arabe
@@ -40,6 +40,13 @@ L'utilisateur avait une application HTML islamique "Niyyah Daily" (3070 lignes) 
 - [x] **Page Stats** : Streak, record, badges, calendrier semaine
 - [x] **Horaires de prière** : API Aladhan avec entrée ville
 - [x] **Design islamique** : Vert foncé, glassmorphism, amber accents
+- [x] **API Backend complète** (Avril 2026):
+  - Authentification JWT (register/login)
+  - Synchronisation cloud des pratiques quotidiennes
+  - Sauvegarde historique et statistiques
+  - MongoDB pour persistance multi-appareils
+  - Mode hors ligne avec localStorage
+  - Documentation API complète
 
 ## Prioritized Backlog
 

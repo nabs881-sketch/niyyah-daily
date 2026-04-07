@@ -26,6 +26,7 @@ const STORAGE_KEYS = {
   INTENTION_DATE: 'niyyah_intention_date',
   ONBOARD: 'niyyah_onboard',
   COUNTERS: 'niyyah_counters_',
+  RAMADAN: 'niyyah_ramadan_',
 };
 
 export const loadState = () => {
@@ -142,3 +143,18 @@ export const saveIntention = (type, label) => {
 
 export const isOnboardDone = () => localStorage.getItem(STORAGE_KEYS.ONBOARD) === '1';
 export const setOnboardDone = () => localStorage.setItem(STORAGE_KEYS.ONBOARD, '1');
+
+export const loadRamadanState = () => {
+  try {
+    const key = STORAGE_KEYS.RAMADAN + getToday();
+    const saved = localStorage.getItem(key);
+    return saved ? JSON.parse(saved) : {};
+  } catch (e) {
+    return {};
+  }
+};
+
+export const saveRamadanState = (ramadanState) => {
+  const key = STORAGE_KEYS.RAMADAN + getToday();
+  localStorage.setItem(key, JSON.stringify(ramadanState));
+};
