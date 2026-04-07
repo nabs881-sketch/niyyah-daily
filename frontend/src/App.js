@@ -287,18 +287,6 @@ function App() {
     setState(newState);
     saveState(newState);
     if (navigator.vibrate) navigator.vibrate(10);
-    
-    // Check for level unlock
-    const newScore = calculateScore(newState);
-    if (newScore >= 100 && currentLevel < 4) {
-      const nextLevel = currentLevel + 1;
-      if (!(state._unlocked || []).includes(nextLevel)) {
-        const updatedState = { ...newState, _unlocked: [...(newState._unlocked || [1]), nextLevel] };
-        setState(updatedState);
-        saveState(updatedState);
-        setTimeout(() => setShowLevelPopup(LEVELS.find(l => l.id === nextLevel)), 500);
-      }
-    }
   };
   
   // Toggle wird item
@@ -412,6 +400,26 @@ function App() {
   const score = calculateScore(state);
   const todayHadith = HADITHS[Math.floor(Date.now() / 86400000) % HADITHS.length];
   const level = LEVELS.find(l => l.id === currentLevel);
+  
+  // Check and unlock next level if score >= 100
+  const checkLevelUnlock = useCallback(() => {
+    const currentScore = calculateScore(state);
+    if (currentScore >= 100 && currentLevel < 4) {
+      const nextLevel = currentLevel + 1;
+      if (!(state._unlocked || [1]).includes(nextLevel)) {
+        const updatedState = { ...state, _unlocked: [...(state._unlocked || [1]), nextLevel] };
+        setState(updatedState);
+        saveState(updatedState);
+        setTimeout(() => setShowLevelPopup(LEVELS.find(l => l.id === nextLevel)), 500);
+      }
+    }
+  }, [state, currentLevel, calculateScore]);
+  
+  // Auto-check on state/wird/counter changes
+  useEffect(() => {
+    checkLevelUnlock();
+  }, [state, wirdState, counters, currentLevel]);
+  
   const getMedal = () => {
     if (score >= 100 && history.streak >= 7) return 'gold';
     if (score >= 80 && history.streak >= 3) return 'silver';
