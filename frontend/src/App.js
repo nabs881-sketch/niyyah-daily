@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   Home, CheckSquare, Compass, BarChart3, Check, 
   ChevronRight, ChevronDown, RotateCcw, MapPin, Play, Pause, X,
-  Volume2, ExternalLink, Moon
+  Volume2, ExternalLink, Moon, Cloud, CloudOff, User, LogOut
 } from "lucide-react";
 import "@/App.css";
 import { 
@@ -14,6 +14,7 @@ import {
   getToday, getDateMinus, formatDateFr, loadRamadanState, saveRamadanState
 } from "@/lib/storage";
 import { LEVELS, WIRD_DATA, BADGES, HADITHS, INTENTIONS, MEDITATION_PHRASES, FRIDAY_ITEMS, RAMADAN_ITEMS, SOURATES, isFriday, WEEKLY_HADITHS } from "@/lib/data";
+import { api, syncToCloud, syncFromCloud } from "@/lib/api";
 
 // API for prayer times
 const fetchPrayerTimes = async (city) => {
@@ -88,6 +89,18 @@ function App() {
   
   // Coran picker
   const [showCoranPicker, setShowCoranPicker] = useState(false);
+  
+  // Auth & Sync
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState('login'); // 'login' or 'register'
+  const [authEmail, setAuthEmail] = useState('');
+  const [authPassword, setAuthPassword] = useState('');
+  const [authName, setAuthName] = useState('');
+  const [authError, setAuthError] = useState('');
+  const [authLoading, setAuthLoading] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => api.isAuthenticated());
+  const [syncEnabled, setSyncEnabled] = useState(() => api.isAuthenticated());
+  const [lastSync, setLastSync] = useState(null);
   
   // Dynamic date check
   useEffect(() => {
@@ -362,6 +375,64 @@ function App() {
   const isRamadanMode = ramadanState.active;
   const ramadanDay = ramadanState.startDate ? Math.round((new Date(getToday() + 'T12:00:00') - new Date(ramadanState.startDate + 'T12:00:00')) / 86400000) + 1 : 0;
   
+  // Auth functions
+  const handleAuth = async (e) => {
+    e.preventDefault();
+    setAuthError('');
+    setAuthLoading(true);
+
+    try {
+      if (authMode === 'register') {
+        await api.register(authEmail, authPassword, authName);
+      } else {
+        await api.login(authEmail, authPassword);
+      }
+      
+      setIsAuthenticated(true);
+      setSyncEnabled(true);
+      setShowAuthModal(false);
+      setAuthEmail('');
+      setAuthPassword('');
+      setAuthName('');
+      
+      // Sync to cloud after login
+      await performSync();
+    } catch (error) {
+      setAuthError(error.message);
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const handleLogout = () => {
+    api.logout();
+    setIsAuthenticated(false);
+    setSyncEnabled(false);
+  };
+
+  // Sync function
+  const performSync = async () => {
+    if (!isAuthenticated || !syncEnabled) return;
+
+    const today = getToday();
+    try {
+      // Sync current state to cloud
+      const success = await syncToCloud(state, counters, wirdState, ramadanState, history, today);
+      if (success) {
+        setLastSync(new Date());
+      }
+    } catch (error) {
+      console.error('Sync error:', error);
+    }
+  };
+
+  // Auto-sync on state changes
+  useEffect(() => {
+    if (!isAuthenticated || !syncEnabled) return;
+    const syncTimeout = setTimeout(() => performSync(), 2000); // Debounce 2s
+    return () => clearTimeout(syncTimeout);
+  }, [state, counters, wirdState, ramadanState, history, isAuthenticated, syncEnabled]);
+  
   return (
     <div className="min-h-screen islamic-bg">
       {/* Hidden audio element */}
@@ -505,6 +576,79 @@ function App() {
         )}
       </AnimatePresence>
       
+      {/* Auth Modal */}
+      <AnimatePresence>
+        {showAuthModal && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[95] flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm">
+            <motion.div initial={{ scale: 0.9, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.9, y: 20 }} className="glass-card p-8 max-w-sm w-full">
+              <div className="flex items-center gap-3 mb-6">
+                <Cloud className="w-6 h-6 text-emerald-500" />
+                <h2 className="font-heading text-2xl text-white">{authMode === 'login' ? 'Se connecter' : 'Créer un compte'}</h2>
+              </div>
+              
+              {authError && (
+                <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 mb-4">
+                  <p className="text-red-400 text-sm">{authError}</p>
+                </div>
+              )}
+              
+              <form onSubmit={handleAuth} className="space-y-4">
+                {authMode === 'register' && (
+                  <input
+                    type="text"
+                    value={authName}
+                    onChange={(e) => setAuthName(e.target.value)}
+                    placeholder="Nom (optionnel)"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-500"
+                  />
+                )}
+                
+                <input
+                  type="email"
+                  value={authEmail}
+                  onChange={(e) => setAuthEmail(e.target.value)}
+                  placeholder="Email"
+                  required
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-500"
+                />
+                
+                <input
+                  type="password"
+                  value={authPassword}
+                  onChange={(e) => setAuthPassword(e.target.value)}
+                  placeholder="Mot de passe"
+                  required
+                  minLength={6}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-500"
+                />
+                
+                <button
+                  type="submit"
+                  disabled={authLoading}
+                  className="w-full btn-primary py-3 rounded-xl disabled:opacity-50"
+                >
+                  {authLoading ? 'Chargement...' : (authMode === 'login' ? 'Se connecter' : 'Créer mon compte')}
+                </button>
+              </form>
+              
+              <div className="mt-4 text-center">
+                <button
+                  onClick={() => {
+                    setAuthMode(authMode === 'login' ? 'register' : 'login');
+                    setAuthError('');
+                  }}
+                  className="text-slate-400 text-sm hover:text-emerald-500 transition-colors"
+                >
+                  {authMode === 'login' ? 'Créer un compte' : 'J\'ai déjà un compte'}
+                </button>
+              </div>
+              
+              <button onClick={() => setShowAuthModal(false)} className="mt-4 w-full text-slate-500 text-sm">Fermer</button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
       {/* Meditation Screen */}
       <AnimatePresence>
         {showMeditation && (
@@ -581,6 +725,32 @@ function App() {
             </div>
             <div className="flex items-center gap-2">
               {isRamadanMode && <span className="text-amber-500 text-xl">🌙</span>}
+              
+              {/* Sync indicator */}
+              {isAuthenticated && (
+                <button
+                  onClick={() => performSync()}
+                  className="relative p-2 rounded-full bg-white/5 hover:bg-white/10 transition-all"
+                  title={lastSync ? `Dernière sync: ${lastSync.toLocaleTimeString('fr-FR')}` : 'Synchroniser'}
+                >
+                  <Cloud className={`w-4 h-4 ${syncEnabled ? 'text-emerald-500' : 'text-slate-500'}`} />
+                  {lastSync && <div className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-emerald-500"></div>}
+                </button>
+              )}
+              
+              {/* Auth button */}
+              <button
+                onClick={() => isAuthenticated ? handleLogout() : setShowAuthModal(true)}
+                className="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-all"
+                title={isAuthenticated ? 'Se déconnecter' : 'Se connecter'}
+              >
+                {isAuthenticated ? (
+                  <LogOut className="w-4 h-4 text-emerald-500" />
+                ) : (
+                  <User className="w-4 h-4 text-slate-400" />
+                )}
+              </button>
+              
               <div className={`px-3 py-1 rounded-full text-xs font-semibold ${medal === 'gold' ? 'bg-amber-500/20 text-amber-400' : medal === 'silver' ? 'bg-slate-400/20 text-slate-300' : medal === 'bronze' ? 'bg-orange-500/20 text-orange-400' : 'bg-white/10 text-slate-500'}`}>
                 {medal === 'gold' ? '🥇' : medal === 'silver' ? '🥈' : medal === 'bronze' ? '🥉' : '—'}
               </div>
