@@ -13,7 +13,7 @@ import {
   loadCurrentLevel, saveCurrentLevel, isOnboardDone, setOnboardDone,
   getToday, getDateMinus, formatDateFr, loadRamadanState, saveRamadanState
 } from "@/lib/storage";
-import { LEVELS, WIRD_DATA, BADGES, HADITHS, INTENTIONS, MEDITATION_PHRASES, FRIDAY_ITEMS, RAMADAN_ITEMS, SOURATES, isFriday, WEEKLY_HADITHS } from "@/lib/data";
+import { LEVELS, WIRD_DATA, BADGES, HADITHS, INTENTIONS, MEDITATION_PHRASES, FRIDAY_ITEMS, RAMADAN_ITEMS, SOURATES, isFriday, WEEKLY_HADITHS, ITEM_INFO } from "@/lib/data";
 import { api, syncToCloud, syncFromCloud } from "@/lib/api";
 
 // API for prayer times
@@ -89,6 +89,14 @@ function App() {
   
   // Coran picker
   const [showCoranPicker, setShowCoranPicker] = useState(false);
+  const [currentSourate, setCurrentSourate] = useState(null);
+  const [currentVerse, setCurrentVerse] = useState(0);
+  const [isPlayingQuran, setIsPlayingQuran] = useState(false);
+  const [quranAudio, setQuranAudio] = useState(null);
+  
+  // Info sheet
+  const [showInfoSheet, setShowInfoSheet] = useState(false);
+  const [currentInfo, setCurrentInfo] = useState(null);
   
   // Auth & Sync
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -433,6 +441,81 @@ function App() {
     return () => clearTimeout(syncTimeout);
   }, [state, counters, wirdState, ramadanState, history, isAuthenticated, syncEnabled]);
   
+  // Info sheet functions
+  const showInfo = (itemId) => {
+    const info = ITEM_INFO[itemId];
+    if (info) {
+      setCurrentInfo({ id: itemId, ...info });
+      setShowInfoSheet(true);
+    }
+  };
+  
+  const closeInfoSheet = () => {
+    setShowInfoSheet(false);
+    setCurrentInfo(null);
+  };
+  
+  // Quran player functions
+  const playSourate = (sourate) => {
+    if (quranAudio) {
+      quranAudio.pause();
+    }
+    setCurrentSourate(sourate);
+    setCurrentVerse(0);
+    setIsPlayingQuran(true);
+    setShowCoranPicker(false);
+    playNextVerse(sourate, 0);
+  };
+  
+  const playNextVerse = (sourate, verseIndex) => {
+    if (!sourate || verseIndex >= sourate[4]) {
+      setIsPlayingQuran(false);
+      return;
+    }
+    
+    const num = String(sourate[0]).padStart(3, '0');
+    const ver = String(verseIndex + 1).padStart(3, '0');
+    const url = `https://everyayah.com/data/Alafasy_128kbps/${num}${ver}.mp3`;
+    
+    const audio = new Audio(url);
+    setQuranAudio(audio);
+    setCurrentVerse(verseIndex);
+    
+    audio.onended = () => {
+      playNextVerse(sourate, verseIndex + 1);
+    };
+    
+    audio.onerror = () => {
+      playNextVerse(sourate, verseIndex + 1);
+    };
+    
+    audio.play().catch(() => {
+      playNextVerse(sourate, verseIndex + 1);
+    });
+  };
+  
+  const stopQuranPlayer = () => {
+    if (quranAudio) {
+      quranAudio.pause();
+      setQuranAudio(null);
+    }
+    setIsPlayingQuran(false);
+    setCurrentSourate(null);
+    setCurrentVerse(0);
+  };
+  
+  const toggleQuranPlay = () => {
+    if (!quranAudio) return;
+    
+    if (isPlayingQuran) {
+      quranAudio.pause();
+      setIsPlayingQuran(false);
+    } else {
+      quranAudio.play();
+      setIsPlayingQuran(true);
+    }
+  };
+  
   return (
     <div className="min-h-screen islamic-bg">
       {/* Hidden audio element */}
@@ -649,6 +732,108 @@ function App() {
         )}
       </AnimatePresence>
       
+      {/* Info Sheet Modal */}
+      <AnimatePresence>
+        {showInfoSheet && currentInfo && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }}
+              onClick={closeInfoSheet}
+              className="fixed inset-0 z-[96] bg-black/60 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              className="fixed bottom-0 left-0 right-0 z-[97] bg-gradient-to-b from-slate-900 to-slate-950 rounded-t-3xl border-t border-white/10 shadow-2xl max-h-[80vh] overflow-y-auto"
+            >
+              <div className="w-12 h-1 bg-slate-700 rounded-full mx-auto mt-3 mb-6"></div>
+              
+              <div className="px-6 pb-8">
+                <div className="text-[10px] font-semibold tracking-widest uppercase text-emerald-500 mb-3">
+                  Pourquoi cette pratique ?
+                </div>
+                
+                {currentInfo.arabic && (
+                  <div className="text-2xl text-emerald-400 text-right mb-4 leading-relaxed border-b border-white/10 pb-4" dir="rtl">
+                    {currentInfo.arabic}
+                  </div>
+                )}
+                
+                {currentInfo.phonetic && (
+                  <div className="text-base italic text-slate-300 mb-3 leading-relaxed">
+                    {currentInfo.phonetic}
+                  </div>
+                )}
+                
+                {currentInfo.translation && (
+                  <div className="text-sm text-slate-400 mb-5 leading-relaxed">
+                    {currentInfo.translation}
+                  </div>
+                )}
+                
+                {currentInfo.why && (
+                  <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 mb-4">
+                    <div className="text-xs font-semibold text-emerald-500 mb-2 uppercase tracking-wider">
+                      💡 Pourquoi ?
+                    </div>
+                    <div className="text-sm text-slate-200 leading-relaxed">
+                      {currentInfo.why}
+                    </div>
+                  </div>
+                )}
+                
+                {currentInfo.ref && (
+                  <div className="text-xs text-slate-500 italic">
+                    — {currentInfo.ref}
+                  </div>
+                )}
+                
+                <button
+                  onClick={closeInfoSheet}
+                  className="w-full mt-6 py-3 rounded-xl border border-white/10 text-slate-400 hover:bg-white/5 transition-colors"
+                >
+                  Fermer
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+      
+      {/* Quran Player */}
+      {currentSourate && (
+        <div className="fixed bottom-20 left-4 right-4 z-[90] bg-gradient-to-br from-emerald-900/95 to-emerald-950/95 backdrop-blur-lg rounded-2xl border border-emerald-500/30 shadow-2xl p-4">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="flex-1">
+              <div className="text-sm font-semibold text-emerald-400">{currentSourate[1]} — {currentSourate[2]}</div>
+              <div className="text-xs text-slate-400">Verset {currentVerse + 1} / {currentSourate[4]}</div>
+            </div>
+            <button
+              onClick={toggleQuranPlay}
+              className="w-10 h-10 rounded-full bg-emerald-500 text-black flex items-center justify-center hover:bg-emerald-400 transition-colors"
+            >
+              {isPlayingQuran ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ml-0.5" />}
+            </button>
+            <button
+              onClick={stopQuranPlayer}
+              className="w-10 h-10 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          <div className="h-1 bg-white/10 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-emerald-500 transition-all duration-300" 
+              style={{ width: `${((currentVerse + 1) / currentSourate[4]) * 100}%` }}
+            />
+          </div>
+        </div>
+      )}
+      
       {/* Meditation Screen */}
       <AnimatePresence>
         {showMeditation && (
@@ -697,15 +882,21 @@ function App() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[80] bg-black/90 backdrop-blur-sm p-6 overflow-y-auto">
             <button onClick={() => setShowCoranPicker(false)} className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white"><X className="w-5 h-5" /></button>
             <h2 className="font-heading text-2xl text-white mb-6 text-center mt-12">Écouter le Coran</h2>
-            <div className="grid grid-cols-2 gap-3 max-w-md mx-auto">
-              {SOURATES.map(s => (
-                <button key={s.num} onClick={() => { playAudio(`https://everyayah.com/data/Alafasy_128kbps/${String(s.num).padStart(3, '0')}001.mp3`); setShowCoranPicker(false); toggleItem('coran_ecoute'); }} className="glass-card p-4 text-left">
+            <p className="text-slate-400 text-sm text-center mb-6">Sélectionnez une sourate pour l'écouter verset par verset</p>
+            <div className="grid grid-cols-1 gap-2 max-w-md mx-auto">
+              {SOURATES.map(sourate => (
+                <button 
+                  key={sourate[0]} 
+                  onClick={() => { playSourate(sourate); toggleItem('coran_ecoute'); }} 
+                  className={`glass-card p-4 text-left hover:bg-emerald-500/10 transition-colors ${currentSourate && currentSourate[0] === sourate[0] ? 'bg-emerald-500/20 border-emerald-500/40' : ''}`}
+                >
                   <div className="flex items-center gap-3">
-                    <span className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-500 text-sm font-bold">{s.num}</span>
-                    <div>
-                      <div className="text-white font-medium">{s.name}</div>
-                      <div className="text-emerald-500/60 font-arabic text-sm">{s.arabic}</div>
+                    <span className="w-9 h-9 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-500 text-sm font-bold flex-shrink-0">{sourate[0]}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-white font-medium">{sourate[1]} <span className="text-slate-500 text-xs">· {sourate[3]}</span></div>
+                      <div className="text-xs text-slate-500">{sourate[4]} versets</div>
                     </div>
+                    <div className="text-emerald-500/70 font-arabic text-lg">{sourate[2]}</div>
                   </div>
                 </button>
               ))}
@@ -1045,6 +1236,7 @@ function App() {
                               <div className="text-slate-500 text-sm">{item.sub}</div>
                               {item.arabic && <div className={`font-arabic text-emerald-500/60 text-lg mt-1 ${done ? 'opacity-30' : ''}`}>{item.arabic}</div>}
                             </div>
+                            {ITEM_INFO[item.id] && <button onClick={(e) => { e.stopPropagation(); showInfo(item.id); }} className="w-7 h-7 rounded-full border border-white/20 flex items-center justify-center text-slate-400 text-xs font-serif italic hover:bg-white/10 transition-colors">i</button>}
                             {item.hasAudio && item.audio && <button onClick={(e) => { e.stopPropagation(); playAudio(item.audio); }} className={`w-7 h-7 rounded-lg flex items-center justify-center text-sm ${playingAudio === item.audio ? 'bg-emerald-500 text-black' : 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-500'}`}><Volume2 className="w-4 h-4" /></button>}
                           </div>
                         );

@@ -255,15 +255,6 @@ export const SOURATES = [
   [17,'Al-Isra','الإسراء','Le Voyage Nocturne',111],
   [18,'Al-Kahf','الكهف','La Caverne',110],
   [19,'Maryam','مريم','Marie',98],
-
-
-// Weekly hadith for bilan
-export const WEEKLY_HADITHS = [
-  { text: "Sois dans ce monde comme un étranger ou un voyageur de passage.", ref: "Bukhari 6416" },
-  { text: "Le fort n'est pas celui qui terrasse, mais celui qui maîtrise sa colère.", ref: "Bukhari 6114" },
-  { text: "Celui qui croit en Allah et au Jour dernier, qu'il soit bon envers son voisin.", ref: "Bukhari 6019" },
-];
-
   [20,'Ta-Ha','طه','Ta-Ha',135],
   [21,'Al-Anbiya','الأنبياء','Les Prophètes',112],
   [22,'Al-Hajj','الحج','Le Pèlerinage',78],
@@ -420,3 +411,11 @@ export const ITEM_INFO = {
     ref: 'Hadith authentifié'
   }
 };
+
+
+// Weekly hadith for bilan
+export const WEEKLY_HADITHS = [
+  { text: "Sois dans ce monde comme un étranger ou un voyageur de passage.", ref: "Bukhari 6416" },
+  { text: "Le fort n'est pas celui qui terrasse, mais celui qui maîtrise sa colère.", ref: "Bukhari 6114" },
+  { text: "Celui qui croit en Allah et au Jour dernier, qu'il soit bon envers son voisin.", ref: "Bukhari 6019" },
+];
