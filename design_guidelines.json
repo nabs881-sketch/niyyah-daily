@@ -1,0 +1,99 @@
+{
+  "theme": "dark",
+  "archetype": "5 (Jewel & Luxury)",
+  "vibe": "Spiritual, serene, premium, deeply connected to Islamic aesthetics with modern minimalism. Rich jewel tones with gold/brass accents to feel like an elegant prayer mat or historic mosque interior.",
+  "colors": {
+    "background": "#022c22", 
+    "foreground": "#f8fafc",
+    "primary": "#d97706",
+    "primary_foreground": "#ffffff",
+    "secondary": "#064e3b",
+    "secondary_foreground": "#fef3c7",
+    "accent": "#fbbf24",
+    "accent_foreground": "#022c22",
+    "card": "rgba(255, 255, 255, 0.05)",
+    "card_border": "rgba(255, 255, 255, 0.1)",
+    "success": "#10b981",
+    "muted": "#065f46"
+  },
+  "typography": {
+    "fonts": {
+      "heading": "Playfair Display, serif",
+      "body": "Outfit, sans-serif",
+      "arabic": "Amiri, serif"
+    },
+    "scale": {
+      "h1": "text-4xl sm:text-5xl tracking-tight font-heading font-medium text-amber-500",
+      "h2": "text-2xl sm:text-3xl tracking-tight font-heading font-normal text-white",
+      "h3": "text-xl sm:text-2xl font-heading text-amber-100",
+      "body": "text-base font-body font-light text-slate-200 leading-relaxed",
+      "small": "text-sm font-body uppercase tracking-widest text-amber-600/80"
+    }
+  },
+  "layout_spacing": {
+    "philosophy": "Generous Spacing Philosophy with Bento Grid layout for dashboard. High padding (p-6, p-8) on cards to create a peaceful, uncrowded feel.",
+    "dashboard_grid": "grid-cols-1 md:grid-cols-4 gap-6",
+    "card_style": "backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.2)] p-6 transition-all duration-300 hover:bg-white/10",
+    "mobile_nav": "fixed bottom-0 w-full backdrop-blur-2xl bg-[#022c22]/80 border-t border-white/10 pb-safe pt-2 px-6 flex justify-between z-50",
+    "header_style": "glassmorphism sticky top-0 z-50 px-6 py-4 backdrop-blur-xl bg-[#022c22]/80 border-b border-white/10"
+  },
+  "components": {
+    "prayer_checklist": {
+      "style": "Vertical timeline or elegant list cards. Completed prayers get a soft golden glow (shadow-[0_0_15px_rgba(251,191,36,0.2)]) and a checkmark. Uncompleted have a subtle border.",
+      "behavior": "Tap to check off with a soft 'bounce' micro-interaction using framer-motion."
+    },
+    "tasbih_counter": {
+      "style": "Massive circular neumorphic/glass button in the center of the screen. Golden border ring that fills up as progress reaches 33/66/99.",
+      "typography": "Huge Playfair Display numbers (text-6xl) in the center."
+    },
+    "qibla_compass": {
+      "style": "Glassmorphism circle with an ornate golden needle pointing to Kaaba. Deep green background with subtle degree markings."
+    },
+    "badges_levels": {
+      "style": "Octagonal or 8-point Islamic star shapes. Colors change based on level (Foundations: Bronze/Copper, Deepening: Silver, Knowledge: Gold, Radiance: Glowing Emerald)."
+    },
+    "buttons": {
+      "primary": "bg-amber-600 hover:bg-amber-500 text-white rounded-xl px-6 py-3 font-medium transition-all",
+      "secondary": "bg-emerald-900/50 hover:bg-emerald-800/50 border border-emerald-700 text-emerald-50 rounded-xl px-6 py-3"
+    }
+  },
+  "media": {
+    "images": [
+      {
+        "category": "hero_background",
+        "url": "https://static.prod-images.emergentagent.com/jobs/d203468f-c7b3-4ee2-8b1a-34e48ae4f8c8/images/b809a4fcf387f9d219b6ee1c31e9eb1c291acbc99f568a9b287f252bb2e66911.png",
+        "description": "Elegant deep emerald green background with subtle minimalist gold Islamic geometric patterns. MUST use heavily darkened via overlay (bg-black/50) to ensure text legibility.",
+        "placement": "Global app background or dashboard top section."
+      },
+      {
+        "category": "wird_meditation_background",
+        "url": "https://images.pexels.com/photos/2104856/pexels-photo-2104856.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "Elaborate Islamic architectural details inside a mosque. Very peaceful.",
+        "placement": "Wird section or Meditation mode background, apply a heavy backdrop blur and green/black overlay."
+      },
+      {
+        "category": "tasbih_texture",
+        "url": "https://images.unsplash.com/photo-1601824096525-954268b9eb72?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1MDZ8MHwxfHNlYXJjaHwyfHxwcmF5ZXIlMjBiZWFkc3xlbnwwfHx8fDE3NzU1NTExMDN8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Brown and black beaded necklace. Earthy, organic feel.",
+        "placement": "Small accent image or blurred background for the Tasbih counter section."
+      }
+    ]
+  },
+  "animation_motion": {
+    "page_transitions": "Fade in with a slight upward translation (y: 10 to y: 0) on load.",
+    "interactions": "All interactive elements must have hover/active states. Buttons should scale down slightly on tap (scale: 0.98).",
+    "progress_bars": "Smooth width transitions for streak and tasbih progress."
+  },
+  "accessibility": {
+    "contrast": "Ensure white or light amber text over the deep green backgrounds meets minimum 4.5:1 ratio. Avoid pure white text on bright gold.",
+    "testing": "All interactive and key informational elements MUST include a `data-testid` attribute (e.g., `data-testid='prayer-fajr-checkbox'`)."
+  },
+  "instructions_to_main_agent": [
+    "Build this as a Mobile-First PWA, meaning the layout should heavily prioritize a max-w-md or max-w-lg container centered on desktop, with a bottom navigation bar.",
+    "Install and configure 'lucide-react' for icons (mosque, compass, book, check-circle, etc.).",
+    "Use framer-motion heavily for the Tasbih counter (pulse effect on tap), prayer checklist (staggered entrance), and Qibla compass needle.",
+    "Import 'Playfair Display' and 'Outfit' fonts via Google Fonts.",
+    "Implement Islamic Geometric UI strictly avoiding over-clutter. Use the 'islamic_bg_main' image carefully as an underlay with a strong gradient mask.",
+    "Use Shadcn UI for Tabs, Progress, and Dialogs, but heavily restyle them using the glassmorphism and deep emerald/gold color scheme outlined."
+  ]
+}
